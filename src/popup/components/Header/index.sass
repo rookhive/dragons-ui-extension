@@ -1,0 +1,30 @@
+@import ../cfg
+
+.header
+    position: relative
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 15px
+    background: lighten($color__background, 1%)
+    box-shadow: $shadow
+
+    &__logo
+        display: inline-flex
+        align-items: center
+
+        & > span
+            padding:
+                left: 5px
+            font: 13px $font__narrow
+            color: #dde
+
+    &__hex
+        +hex(vertical, 14px, 4px, $color__blue)
+
+    &__version
+        padding: 8px
+        border-radius: 4px
+        background: rgba(255, 255, 255, .025)
+        font: 12px/12px $font__regular
+        color: #ccc

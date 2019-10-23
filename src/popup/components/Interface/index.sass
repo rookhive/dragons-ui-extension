@@ -1,0 +1,29 @@
+@import ../cfg
+
+.interface
+    flex-grow: 1
+    padding: 10px
+    background: $color__background
+    font: 12px $font__regular
+    color: #eee
+
+    .switcher
+        padding: 10px
+        transition: background .2s linear
+        border-radius: 4px
+
+        &:not(:first-child)
+            margin: 5px 0 0 0
+
+        &_enabled
+            background: rgba(255, 255, 255, .025)
+
+    .switcher_enabled &__switcher-button
+        color: #e4e4e4
+
+    &__switcher-button
+        padding-left: 10px
+        user-select: none
+        font-size: 11px
+        color: #aaa
+        transition: color .2s linear

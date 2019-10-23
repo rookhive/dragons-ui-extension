@@ -1,0 +1,38 @@
+=hex($direction: vertical, $hex-side-width: 300px, $hex-border-radius: 50px, $hex-background: #253336)
+    $sqrt-3:            1.7320508075688772935274463415059
+    $coefficient:       $hex-border-radius * ($sqrt-3 - 1)
+
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    width:  2 * $hex-side-width
+    height: 2 * $hex-side-width
+
+    span
+        position: relative
+        background-color: $hex-background
+        border-radius: $hex-border-radius
+
+        @if $direction == horizontal
+            width: $hex-side-width + $coefficient
+            height: $sqrt-3 * $hex-side-width
+        @else if $direction == vertical
+            width: $sqrt-3 * $hex-side-width
+            height: $hex-side-width + $coefficient
+
+        &:before,
+        &:after
+            content: ''
+            position: absolute
+            top: 0
+            right: 0
+            bottom: 0
+            left: 0
+            background-color: $hex-background
+            border-radius: inherit
+
+        &:before
+            transform: rotate(60deg)
+
+        &:after
+            transform: rotate(120deg)

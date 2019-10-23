@@ -1,0 +1,26 @@
+@import ../cfg
+
+.footer
+    padding: 0 20px 15px
+    background: $color__background
+    text-align: right
+
+    & > span
+        font: 11px/11px $font__regular
+        color: #666
+
+    a
+        text-decoration: none
+        outline: none
+        color: inherit
+        transition: color .25s linear
+
+        span
+            border-bottom: 1px solid transparent
+            transition: border-bottom-color .25s linear
+
+        &:hover
+            color: #fff
+
+            span
+                border-bottom-color: #fff

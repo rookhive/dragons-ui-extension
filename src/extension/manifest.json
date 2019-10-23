@@ -1,0 +1,47 @@
+{
+    "manifest_version": 2,
+    "name": "Dragons UI",
+    "version": "0.0.1",
+    "description": "Significant UI/UX improvements and cool features for one old MMORPG.",
+    "permissions": [
+        "*",
+        "*://*.mist-game.ru/",
+        "tabs"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.mist-game.ru/"
+            ],
+            "js": [
+                "core.js"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "resources/**/*.*"
+    ],
+    "browser_action": {
+        "default_title": "Кликните для просмотра и настройки всех возможностей расширения",
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+            "16": "images/icon16.png",
+            "24": "images/icon24.png",
+            "32": "images/icon32.png",
+            "48": "images/icon48.png",
+            "128": "images/icon128.png"
+        }
+    },
+    "icons": {
+        "16": "images/icon16.png",
+        "24": "images/icon24.png",
+        "32": "images/icon32.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+    }
+}

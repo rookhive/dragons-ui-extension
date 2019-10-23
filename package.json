@@ -1,0 +1,50 @@
+{
+  "name": "dragons-ui",
+  "version": "0.0.1",
+  "description": "Significant UI/UX improvements and cool features for one old MMORPG.",
+  "main": "index.js",
+  "scripts": {
+    "extension:start": "cd extension && web-ext run",
+    "gulp:build": "gulp build",
+    "gulp:watch": "gulp watch",
+    "popup:build": "webpack --progress --config=webpack/ui.webpack.js",
+    "popup:watch": "run-s \"popup:build -- --watch\"",
+    "popup:dev": "webpack-dev-server --config=webpack/ui.webpack.js --open",
+    "core:build": "webpack --progress --config=webpack/core.webpack.js",
+    "core:watch": "run-s \"core:build -- --watch\"",
+    "build": "run-s *:build",
+    "watch": "run-p *:watch",
+    "dev": "npm-run-all gulp:build --parallel *:start watch"
+  },
+  "keywords": [],
+  "author": "cwaffie <cwaffie@mail.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^2.1.0",
+    "dotenv": "^8.2.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-if": "^2.0.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "npm-run-all": "^4.1.5",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^1.0.0",
+    "web-ext": "^3.0.0",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.8.2"
+  }
+}

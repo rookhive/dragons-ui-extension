@@ -1,0 +1,43 @@
+@import ../cfg
+
+.switcher
+    display: flex
+    align-items: center
+    cursor: pointer
+
+    &:not(&_enabled):hover
+        background: rgba(255, 255, 255, .015)
+
+    &__box
+        position: relative
+        flex-shrink: 0
+        display: inline-flex
+        justify-content: center
+        align-items: center
+        width: 30px
+        height: 10px
+
+    &_enabled &__track
+        background: darken($color__blue, 10%)
+
+    &_enabled &__slider
+        left: calc(100% - 10px)
+        background: $color__blue
+
+    &__track
+        width: 80%
+        height: 3px
+        border-radius: 2px
+        background: darken(#999, 10%)
+        transition: background .25s linear
+
+    &__slider
+        position: absolute
+        top: 0
+        left: 0
+        width: 10px
+        height: inherit
+        border-radius: 50%
+        background: #999
+        box-shadow: $shadow
+        transition: all .25s ease-in-out
