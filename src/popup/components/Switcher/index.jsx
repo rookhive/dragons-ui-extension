@@ -1,38 +1,51 @@
 import React, { Component } from 'react'
+import pMinDelay from 'p-min-delay'
 
 import './index.sass'
+import Loader from '../Loader'
 
 export default class Switcher extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            switchedOn: false
+            isLoading: false,
+            switchedOn: props.mode
         }
     }
 
-    onSwitch = () => {
+    onSwitch = async () => {
         const { onSwitch, onSwitchOn, onSwitchOff } = this.props
         const newMode = !this.state.switchedOn
         this.setState(() => ({
-            switchedOn: newMode
+            isLoading: true
         }))
-        onSwitch && onSwitch(newMode)
+        onSwitch && await pMinDelay(onSwitch(newMode), 500)
         if (newMode) {
             onSwitchOn && onSwitchOn()
         } else {
             onSwitchOff && onSwitchOff()
         }
+        this.setState(() => ({
+            isLoading: false,
+            switchedOn: newMode
+        }))
     }
 
     render() {
-        const switcherClassName = `switcher ${this.state.switchedOn ? 'switcher_enabled' : ''}`
+        const { isLoading, switchedOn } = this.state
+        let switcherClassName = 'switcher'
+        switchedOn && (switcherClassName += ' switcher_enabled')
+        isLoading && (switcherClassName += ' switcher_loading')
         return (
-            <div className={switcherClassName} onClick={this.onSwitch}>
+            <div className={switcherClassName} onClick={isLoading ? null : this.onSwitch}>
                 <div className="switcher__box">
                     <div className="switcher__track"></div>
                     <div className="switcher__slider"></div>
                 </div>
                 {this.props.children}
+                <div className={`switcher__loader ${isLoading ? 'switcher__loader_loading' : ''}`}>
+                    {isLoading && <Loader section="small"/>}
+                </div>
             </div>
         )
     }

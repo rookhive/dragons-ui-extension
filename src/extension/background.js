@@ -6,7 +6,6 @@ const platform = typeof browser !== 'undefined'
 platform.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
     switch (request.type) {
         case 'SET_FEATURE':
-            console.log('Okey, пришли данные:', request.data)
             await setFeature(request.data)
             return true
     }
@@ -14,11 +13,9 @@ platform.runtime.onMessage.addListener(async function (request, sender, sendResp
 
 async function setFeature(data) {
     const tabs = await platform.tabs.query({
-        url: "*://*.mist-game.ru/",
-        // active: true,
-        // currentWindow: true
+        url: "*://world.mist-game.ru/"
     })
-    localStorage.setItem(data.feature, data.isEnabled)
+    await platform.storage.local.set({ [data.feature]: data.isEnabled })
     // Player is in the game now, push in or pull out feature's stuff.
     if (tabs.length) {
         return await sendMessage(tabs, {
@@ -37,7 +34,6 @@ function sendMessage(tabs, data) {
         tabs[0].id,
         data
     )
-    // return true
 }
 
 

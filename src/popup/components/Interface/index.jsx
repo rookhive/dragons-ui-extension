@@ -1,36 +1,53 @@
 import React, { Component } from 'react'
+import pMinDelay from 'p-min-delay'
 
 import './index.sass'
 import Switcher from '../Switcher'
+import Loader from '../Loader'
 import platform from '../../../platform'
 import combinedConfig from '../../../features/combinedConfig'
 
 export default class Interface extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            features: null
+        }
+    }
+
+    async componentDidMount() {
+        const features = await pMinDelay(platform.storage.local.get(null), 500)
+        this.setState(() => ({ features }))
+    }
+
+    getFeatureSwitchers() {
+        const { features } = this.state
+        return Object.entries(combinedConfig)
+            .map(values => values[1])
+            .map(({ id, title }, i) => (
+                <Switcher
+                    key={i}
+                    mode={features[id]}
+                    onSwitch={isEnabled => platform.runtime.sendMessage({
+                        type: 'SET_FEATURE',
+                        data: {
+                            feature: id,
+                            isEnabled
+                        }
+                    })}
+                >
+                    <div className="interface__switcher-button">{title}</div>
+                </Switcher>
+            ))
+    }
 
     render() {
         return (
             <div className="interface">
                 {
-                    Object.entries(combinedConfig)
-                        .map(values => values[1])
-                        .map(({ id, title }, i) => (
-                            <Switcher
-                                key={i}
-                                onSwitch={async function (isEnabled) {
-                                    console.log('Переключатель переключен в положение', isEnabled)
-                                    const result = await platform.runtime.sendMessage({
-                                        type: 'SET_FEATURE',
-                                        data: {
-                                            feature: id,
-                                            isEnabled
-                                        }
-                                    })
-                                    console.log('Результат включения:', result)
-                                }}
-                            >
-                                <div className="interface__switcher-button">{title}</div>
-                            </Switcher>
-                        ))
+                    this.state.features
+                        ? this.getFeatureSwitchers()
+                        : <Loader />
                 }
             </div>
         )

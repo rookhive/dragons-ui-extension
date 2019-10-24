@@ -1,12 +1,14 @@
 @import ../cfg
 
 .switcher
+    position: relative
     display: flex
     align-items: center
     cursor: pointer
 
-    &:not(&_enabled):hover
-        background: rgba(255, 255, 255, .015)
+    &:not(&_enabled):hover,
+    &_loading
+        background: lighten($color__background, 1%) //rgba(255, 255, 255, .015)
 
     &__box
         position: relative
@@ -23,6 +25,24 @@
     &_enabled &__slider
         left: calc(100% - 10px)
         background: $color__blue
+    
+    &_enabled &__loader
+        background: lighten($color__background, 2%) 
+
+    &__loader
+        visibility: hidden
+        position: absolute
+        top: 0
+        right: 0
+        width: 40px
+        height: 100%
+        transition: all .15s linear
+        opacity: 0
+
+        &_loading
+            visibility: visible
+            opacity: 1
+            background: lighten($color__background, 1%) 
 
     &__track
         width: 80%

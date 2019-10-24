@@ -1,9 +1,12 @@
 @import ../cfg
 
 .footer
-    padding: 0 20px 15px
-    background: $color__background
+    position: relative
+    padding: 10px 20px 15px
     text-align: right
+    background: lighten($color__background, .5%)
+    box-shadow: $shadow
+    z-index: 2
 
     & > span
         font: 11px/11px $font__regular

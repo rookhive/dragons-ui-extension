@@ -7,7 +7,7 @@ const injector = new Injector()
 platform.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
     switch (request.type) {
         case 'SWITCH_FEATURE':
-            injector.analyse(request.data)
+            injector.switchFeature(request.data)
             return true
     }
 })

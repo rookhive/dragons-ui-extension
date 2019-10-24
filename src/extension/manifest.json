@@ -6,7 +6,8 @@
     "permissions": [
         "*",
         "*://*.mist-game.ru/",
-        "tabs"
+        "tabs",
+        "storage"
     ],
     "background": {
         "scripts": [
@@ -16,18 +17,15 @@
     "content_scripts": [
         {
             "matches": [
-                "*://*.mist-game.ru/"
+                "*://world.mist-game.ru/"
             ],
             "js": [
                 "core.js"
             ]
         }
     ],
-    "web_accessible_resources": [
-        "resources/**/*.*"
-    ],
     "browser_action": {
-        "default_title": "Кликните для просмотра и настройки всех возможностей расширения",
+        "default_title": "Настройки расширения Dragons UI",
         "default_popup": "popup/popup.html",
         "default_icon": {
             "16": "images/icon16.png",

@@ -1,7 +1,9 @@
 @import ../cfg
 
 .interface
+    position: relative
     flex-grow: 1
+    min-height: 200px
     padding: 10px
     background: $color__background
     font: 12px $font__regular
@@ -16,7 +18,7 @@
             margin: 5px 0 0 0
 
         &_enabled
-            background: rgba(255, 255, 255, .025)
+            background: lighten($color__background, 2%) // rgba(255, 255, 255, .025)
 
     .switcher_enabled &__switcher-button
         color: #e4e4e4
