@@ -35,19 +35,12 @@ export default class Injector {
     switchFeature({ feature: featureName, isEnabled }) {
         if (!combinedConfig[featureName])
             throw new Error(`There is no feature "${featureName}".`)
-
         const featureConfig = combinedConfig[featureName]
-
-        // Inject to the game page the file '{extensionFolder}/features/{feature}/inject.(css|js)'
         if (Array.isArray(featureConfig.extensionsToInject)) {
             featureConfig.extensionsToInject.forEach(ext => {
                 this[(isEnabled ? 'push' : 'pull') + 'File'](ext, featureName)
             }, this)
         }
-        
-        // Starts/stops feature workflow.
-        const featureModeHandler = featureConfig[isEnabled ? 'start' : 'stop']
-        featureModeHandler && featureModeHandler()
     }
 
     injectObserver() {

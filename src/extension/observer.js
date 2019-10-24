@@ -7,9 +7,6 @@ var DragonsUIObserver = new class DragonsUIObserver {
         dropSideEffects() {}
     }
 
-    // Observer has successfully injected.
-    // init() {}
-
     register(featureName, featureClass) {
         if (this.features.has(featureName))
             return
@@ -36,13 +33,3 @@ var DragonsUIObserver = new class DragonsUIObserver {
         console[type](`[DragonsUIObserver]: ${message}`)
     }
 }
-
-// This condition must be running in the content script. Then run all enabled features.
-// switch (document.readyState) {
-//     case 'complete':
-//         DragonsUIObserver.init()
-//         break
-//     default:
-//         window.addEventListener('load', DragonsUIObserver.init)
-//         break
-// }
