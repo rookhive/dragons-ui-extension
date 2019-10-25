@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Dragons UI",
     "version": "1.0.0",
-    "description": "Significant UI/UX improvements and cool features for one old MMORPG.",
+    "description": "Ряд утилит, повышающих комфортность игры в MMORPG Mist.",
     "permissions": [
         "*://*.mist-game.ru/",
         "activeTab",

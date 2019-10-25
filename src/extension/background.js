@@ -17,4 +17,5 @@ async function switchFeature(data) {
             }
         )
     }
+    return { success: true }
 }

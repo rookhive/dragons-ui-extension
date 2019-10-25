@@ -21,7 +21,6 @@ export default class Injector {
         try {
             const storageData = await browser.storage.local.get(null)
             Object.entries(storageData)
-                // .filter(field => field[1])
                 .map(([feature, isEnabled]) => this.switchFeature({
                     feature,
                     isEnabled

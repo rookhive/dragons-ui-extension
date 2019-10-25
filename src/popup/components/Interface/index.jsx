@@ -15,13 +15,6 @@ export default class Interface extends Component {
     }
 
     async componentDidMount() {
-        // If call storage.local.get directly without a Promise wrapping,
-        // it throws an error in Chrome.. In Firefox works fine athough.
-        // const features = await pMinDelay(new Promise(resolve => {
-        //     browser.storage.local.get(null, data => {
-        //         resolve(data)
-        //     })
-        // }), 500)
         const features = await pMinDelay(browser.storage.local.get(null), 500)
         this.setState(() => ({ features }))
     }
