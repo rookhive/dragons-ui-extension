@@ -36,9 +36,7 @@ module.exports = {
             {
                 test: /\.sass$/,
                 use: [
-                    isDev
-                        ? 'style-loader'
-                        : MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader'
                 ]

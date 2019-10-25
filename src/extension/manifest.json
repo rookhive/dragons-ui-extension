@@ -4,7 +4,6 @@
     "version": "1.0.0",
     "description": "Significant UI/UX improvements and cool features for one old MMORPG.",
     "permissions": [
-        "*",
         "*://*.mist-game.ru/",
         "tabs",
         "storage"
