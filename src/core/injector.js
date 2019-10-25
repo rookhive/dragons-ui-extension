@@ -1,4 +1,4 @@
-import platform from '../platform'
+import { platform, promisify } from '../utils'
 import combinedConfig from '../features/combinedConfig'
 
 export default class Injector {
@@ -20,7 +20,7 @@ export default class Injector {
 
     async injectEnabledFeatures() {
         try {
-            const storageData = await platform.storage.local.get(null)
+            const storageData = await promisify(platform.storage.local, 'get', null)
             Object.entries(storageData)
                 // .filter(field => field[1])
                 .map(([feature, isEnabled]) => this.switchFeature({

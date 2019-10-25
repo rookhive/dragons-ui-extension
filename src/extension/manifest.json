@@ -5,6 +5,7 @@
     "description": "Significant UI/UX improvements and cool features for one old MMORPG.",
     "permissions": [
         "*://*.mist-game.ru/",
+        "activeTab",
         "tabs",
         "storage"
     ],
@@ -19,9 +20,14 @@
                 "*://world.mist-game.ru/"
             ],
             "js": [
-                "core.js"
+                "core.js",
+                "observer.js"
             ]
         }
+    ],
+    "web_accessible_resources": [
+        "observer.js",
+        "features/**/*.*"
     ],
     "browser_action": {
         "default_title": "Настройки расширения Dragons UI",

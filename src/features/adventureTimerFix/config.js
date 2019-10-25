@@ -1,5 +1,5 @@
 export default {
-    id: 'adventureTimerFix',
+    name: 'adventureTimerFix',
     title: 'Фикс таймера хода',
     extensionsToInject: ['js']
 }

@@ -1,5 +1,5 @@
 export default {
-    id: 'battleMenuFix',
+    name: 'battleMenuFix',
     title: 'Фикс боевого меню',
     extensionsToInject: ['css']
 }

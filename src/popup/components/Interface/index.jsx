@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import pMinDelay from 'p-min-delay'
+import { platform, promisify } from '../../../utils'
 
 import './index.sass'
 import Switcher from '../Switcher'
 import Loader from '../Loader'
-import platform from '../../../platform'
 import combinedConfig from '../../../features/combinedConfig'
 
 export default class Interface extends Component {
@@ -23,7 +23,7 @@ export default class Interface extends Component {
         //         resolve(data)
         //     })
         // }), 500)
-        const features = await pMinDelay(platform.storage.local.get(null), 500)
+        const features = await pMinDelay(promisify(platform.storage.local, 'get', null), 500)
         this.setState(() => ({ features }))
     }
 
@@ -31,17 +31,24 @@ export default class Interface extends Component {
         const { features } = this.state
         return Object.entries(combinedConfig)
             .map(values => values[1])
-            .map(({ id, title }, i) => (
+            .map(({ name, title }, i) => (
                 <Switcher
                     key={i}
-                    mode={features[id]}
+                    mode={features[name]}
                     onSwitch={isEnabled => platform.runtime.sendMessage({
-                        type: 'SET_FEATURE',
+                        type: 'DEAR_BACKGROUND_PLEASE_SWITCH_THE_FEATURE',
                         data: {
-                            feature: id,
+                            feature: name,
                             isEnabled
                         }
                     })}
+                    // onSwitch={isEnabled => promisify(platform.runtime, 'sendMessage', {
+                    //     type: 'DEAR_BACKGROUND_PLEASE_SWITCH_THE_FEATURE',
+                    //     data: {
+                    //         feature: name,
+                    //         isEnabled
+                    //     }
+                    // })}
                 >
                     <div className="interface__switcher-button">{title}</div>
                 </Switcher>

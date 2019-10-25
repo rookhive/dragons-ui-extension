@@ -19,7 +19,11 @@ export default class Switcher extends Component {
         this.setState(() => ({
             isLoading: true
         }))
-        onSwitch && await pMinDelay(onSwitch(newMode), 500)
+        if (onSwitch) {
+            console.log('Включается фича...')
+            const result = await pMinDelay(onSwitch(newMode), 500)
+            console.log('полученный ответ в popup от background о включении/отключении:', result)
+        }
         if (newMode) {
             onSwitchOn && onSwitchOn()
         } else {
