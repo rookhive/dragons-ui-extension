@@ -1,4 +1,3 @@
-import { platform, promisify } from '../utils'
 import combinedConfig from '../features/combinedConfig'
 
 export default class Injector {
@@ -20,7 +19,7 @@ export default class Injector {
 
     async injectEnabledFeatures() {
         try {
-            const storageData = await promisify(platform.storage.local, 'get', null)
+            const storageData = await browser.storage.local.get(null)
             Object.entries(storageData)
                 // .filter(field => field[1])
                 .map(([feature, isEnabled]) => this.switchFeature({
@@ -28,7 +27,7 @@ export default class Injector {
                     isEnabled
                 }))
         } catch (error) {
-            console.error('Couldn\'t inject enabled features:', error)
+            throw error
         }
     }
 
@@ -54,7 +53,7 @@ export default class Injector {
                 document.createElement('script'),
                 {
                     id: observerClassName,
-                    src: platform.runtime.getURL(`observer.js`)
+                    src: browser.runtime.getURL(`observer.js`)
                 }
             )
         )
@@ -66,7 +65,7 @@ export default class Injector {
         if (existingNode) {
             existingNode.remove()
         }
-        const filePath = platform.runtime.getURL(
+        const filePath = browser.runtime.getURL(
             `features/${featureName}/inject.${ext}`
         )
         const node = document.head.appendChild(

@@ -11,6 +11,7 @@
     ],
     "background": {
         "scripts": [
+            "browser-polyfill.js",
             "background.js"
         ]
     },
@@ -20,8 +21,8 @@
                 "*://world.mist-game.ru/"
             ],
             "js": [
-                "core.js",
-                "observer.js"
+                "browser-polyfill.js",
+                "core.js"
             ]
         }
     ],

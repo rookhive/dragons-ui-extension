@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import pMinDelay from 'p-min-delay'
-import { platform, promisify } from '../../../utils'
 
 import './index.sass'
 import Switcher from '../Switcher'
@@ -19,11 +18,11 @@ export default class Interface extends Component {
         // If call storage.local.get directly without a Promise wrapping,
         // it throws an error in Chrome.. In Firefox works fine athough.
         // const features = await pMinDelay(new Promise(resolve => {
-        //     platform.storage.local.get(null, data => {
+        //     browser.storage.local.get(null, data => {
         //         resolve(data)
         //     })
         // }), 500)
-        const features = await pMinDelay(promisify(platform.storage.local, 'get', null), 500)
+        const features = await pMinDelay(browser.storage.local.get(null), 500)
         this.setState(() => ({ features }))
     }
 
@@ -35,20 +34,13 @@ export default class Interface extends Component {
                 <Switcher
                     key={i}
                     mode={features[name]}
-                    onSwitch={isEnabled => platform.runtime.sendMessage({
+                    onSwitch={isEnabled => browser.runtime.sendMessage({
                         type: 'DEAR_BACKGROUND_PLEASE_SWITCH_THE_FEATURE',
                         data: {
                             feature: name,
                             isEnabled
                         }
                     })}
-                    // onSwitch={isEnabled => promisify(platform.runtime, 'sendMessage', {
-                    //     type: 'DEAR_BACKGROUND_PLEASE_SWITCH_THE_FEATURE',
-                    //     data: {
-                    //         feature: name,
-                    //         isEnabled
-                    //     }
-                    // })}
                 >
                     <div className="interface__switcher-button">{title}</div>
                 </Switcher>

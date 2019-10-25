@@ -20,9 +20,10 @@ export default class Switcher extends Component {
             isLoading: true
         }))
         if (onSwitch) {
-            console.log('Включается фича...')
             const result = await pMinDelay(onSwitch(newMode), 500)
-            console.log('полученный ответ в popup от background о включении/отключении:', result)
+            if (result.error) {
+                throw new Error(result.error)
+            }
         }
         if (newMode) {
             onSwitchOn && onSwitchOn()
