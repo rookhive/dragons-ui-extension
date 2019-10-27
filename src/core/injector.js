@@ -14,27 +14,6 @@ export default class Injector {
 
     init() {
         this.injectObserver()
-        this.injectEnabledFeatures()
-    }
-
-    async injectEnabledFeatures() {
-        try {
-            const storageData = await browser.storage.local.get(null)
-            Object.entries(storageData)
-                .forEach(async ([name, mode]) => {
-                    if (!combinedConfig[name]) {
-                        console.warn(`Couldn't find feature '${name}' in combinedConfig, the key '${name}' will be deleted from storage.`)
-                        await browser.storage.local.remove(name)
-                        return
-                    }
-                    await this.switchFeature({
-                        name,
-                        mode
-                    })
-                })
-        } catch (error) {
-            throw error
-        }
     }
 
     async switchFeature({ name, mode }) {
