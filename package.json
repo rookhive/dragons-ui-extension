@@ -10,8 +10,8 @@
     "popup:build": "webpack --progress --config=webpack/ui.webpack.js",
     "popup:watch": "run-s \"popup:build -- --watch\"",
     "popup:dev": "webpack-dev-server --config=webpack/ui.webpack.js --open",
-    "core:build": "webpack --progress --config=webpack/core.webpack.js",
-    "core:watch": "run-s \"core:build -- --watch\"",
+    "compile:build": "webpack --progress --config=webpack/compile.webpack.js",
+    "compile:watch": "run-s \"compile:build -- --watch\"",
     "build": "run-s *:build",
     "watch": "run-p *:watch",
     "dev": "npm-run-all gulp:build --parallel *:start watch"

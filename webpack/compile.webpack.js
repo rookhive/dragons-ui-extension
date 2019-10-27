@@ -5,7 +5,8 @@ const path = require('path')
 module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
-        core: path.join(__dirname, '../src/core/index')
+        background: path.join(__dirname, '../src/background'),
+        core: path.join(__dirname, '../src/core')
     },
     output: {
         filename: '[name].js',

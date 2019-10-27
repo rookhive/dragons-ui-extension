@@ -10,28 +10,28 @@ export default class Interface extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            features: null
+            savedFeatureModes: null
         }
     }
 
     async componentDidMount() {
-        const features = await pMinDelay(browser.storage.local.get(null), 500)
-        this.setState(() => ({ features }))
+        const savedFeatureModes = await pMinDelay(browser.storage.local.get(null), 500)
+        this.setState(() => ({ savedFeatureModes }))
     }
 
     getFeatureSwitchers() {
-        const { features } = this.state
+        const { savedFeatureModes } = this.state
         return Object.entries(combinedConfig)
             .map(values => values[1])
             .map(({ name, title }, i) => (
                 <Switcher
                     key={i}
-                    mode={features[name]}
-                    onSwitch={isEnabled => browser.runtime.sendMessage({
+                    mode={savedFeatureModes[name]}
+                    onSwitch={mode => browser.runtime.sendMessage({
                         type: 'DEAR_BACKGROUND_PLEASE_SWITCH_THE_FEATURE',
                         data: {
-                            feature: name,
-                            isEnabled
+                            name,
+                            mode
                         }
                     })}
                 >
@@ -44,7 +44,7 @@ export default class Interface extends Component {
         return (
             <div className="interface">
                 {
-                    this.state.features
+                    this.state.savedFeatureModes
                         ? this.getFeatureSwitchers()
                         : <Loader />
                 }

@@ -1,35 +1,37 @@
-var DragonsUIObserver = new class DragonsUIObserver {
+window.DragonsUI = window.DragonsUI || new class DragonsUI {
     constructor() {
         this.features = new Map()
     }
 
-    Feature = class extends DragonsUIObserver {
-        dropSideEffects() {}
+    Feature = class {
+        install() {}
+        uninstall() {}
+        systemMessage(message) {
+            C.cmd('systemMessage', {
+                message: `[Dragons UI] ${message}`,
+                timestamp: Date.now() / 1000
+            })
+        }
     }
 
     register(featureName, featureClass) {
-        if (this.features.has(featureName))
+        if (this.features.has(featureName)) {
             return
+        }
         const featureInstance = new featureClass()
         this.features.set(featureName, featureInstance)
-        featureInstance.init()
+        featureInstance.install()
     }
 
     unregister(featureName) {
-        if (!this.features.has(featureName))
+        if (!this.features.has(featureName)) {
             return
-        this.features.get(featureName).dropSideEffects()
+        }
+        this.features.get(featureName).uninstall()
         this.features.delete(featureName)
     }
 
-    systemMessage(message) {
-        C.cmd('systemMessage', {
-            message: `[Dragons UI] ${message}`,
-            timestamp: Date.now() / 1000
-        })
-    }
-
     log(type, message) {
-        console[type](`[DragonsUIObserver]: ${message}`)
+        console[type](`[DragonsUI]: ${message}`)
     }
 }

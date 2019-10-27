@@ -1,5 +1,9 @@
 export default {
     name: 'battleMenuFix',
     title: 'Фикс боевого меню',
-    extensionsToInject: ['css']
+    files: {
+        inject: {
+            css: true
+        }
+    }
 }

@@ -4,10 +4,12 @@
     "version": "1.0.0",
     "description": "Ряд утилит, повышающих комфортность игры в MMORPG Mist.",
     "permissions": [
-        "*://*.mist-game.ru/",
+        "*://world.mist-game.ru/*",
         "activeTab",
         "tabs",
-        "storage"
+        "storage",
+        "webRequest",
+        "webRequestBlocking"
     ],
     "background": {
         "scripts": [
@@ -18,7 +20,7 @@
     "content_scripts": [
         {
             "matches": [
-                "*://world.mist-game.ru/"
+                "*://world.mist-game.ru/*"
             ],
             "js": [
                 "browser-polyfill.js",

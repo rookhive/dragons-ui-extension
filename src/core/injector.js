@@ -21,23 +21,46 @@ export default class Injector {
         try {
             const storageData = await browser.storage.local.get(null)
             Object.entries(storageData)
-                .map(([feature, isEnabled]) => this.switchFeature({
-                    feature,
-                    isEnabled
-                }))
+                .forEach(async ([name, mode]) => {
+                    if (!combinedConfig[name]) {
+                        console.warn(`Couldn't find feature '${name}' in combinedConfig, the key '${name}' will be deleted from storage.`)
+                        await browser.storage.local.remove(name)
+                        return
+                    }
+                    await this.switchFeature({
+                        name,
+                        mode
+                    })
+                })
         } catch (error) {
             throw error
         }
     }
 
-    switchFeature({ feature: featureName, isEnabled }) {
-        if (!combinedConfig[featureName])
-            throw new Error(`There is no feature "${featureName}".`)
-        const featureConfig = combinedConfig[featureName]
-        if (Array.isArray(featureConfig.extensionsToInject)) {
-            featureConfig.extensionsToInject.forEach(ext => {
-                this[(isEnabled ? 'push' : 'pull') + 'File'](ext, featureName)
+    async switchFeature({ name, mode }) {
+        if (!combinedConfig[name])
+            throw new Error(`There is no feature "${name}".`)
+        const featureConfig = combinedConfig[name]
+        if (!featureConfig) {
+            throw new Error(`Couldn\'t find config for ${name} feature.`)
+        }
+        if (!featureConfig.files) {
+            return
+        }
+        if (featureConfig.files.inject) {
+            ['js', 'css'].forEach(ext => {
+                if (featureConfig.files.inject[ext]) {
+                    this[(mode ? 'push' : 'pull') + 'File'](ext, name)
+                }
             }, this)
+        }
+        if (featureConfig.files.content) {
+            const contentChunk = await import(/* webpackMode: "eager" */ `../features/${name}/content.js`)
+                .then(module => module.default)
+                .catch(error => {
+                    throw new Error(`Couldn\'t import "../features/${name}/content.js":`, error)
+                })
+            contentChunk[mode ? 'install' : 'uninstall']()
         }
     }
 
@@ -92,8 +115,8 @@ export default class Injector {
             const scriptReseter = document.createElement('script')
             scriptReseter.id = nodeId + '-deleter'
             scriptReseter.text = `
-                if (typeof DragonsUIObserver !== 'undefined') {
-                    DragonsUIObserver.unregister('${featureName}')
+                if (typeof DragonsUI !== 'undefined') {
+                    DragonsUI.unregister('${featureName}')
                 }
             `
             document.head.appendChild(scriptReseter)
