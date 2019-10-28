@@ -6,16 +6,14 @@ export default class Background {
     constructor() {
         this.backgroundObjects = new Map()
         this.httpRequestHandlerContextMap = new Map()
-
-        this.init()
     }
 
     test() {
         console.log('inheritance works!')
     }
 
-    init() {
-        this.injectEnabledFeatures()
+    async init() {
+        await this.injectEnabledFeatures()
     }
 
     async injectEnabledFeatures() {
@@ -109,23 +107,21 @@ export default class Background {
         }
     }
 
+    // Works in Firefox only.
     getDefaultHttpResponseListener(listener) {
         return details => {
             if (details.method === 'GET') {
                 return
             }
-
             const filter = browser.webRequest.filterResponseData(details.requestId)
             let decoder = new TextDecoder('utf-8', { fatal: true })
             let response = ''
-
             filter.ondata = event => {
                 response += decoder.decode(event.data, {
                     stream: true
                 })
                 filter.write(event.data)
             }
-
             filter.onstop = () => {
                 listener(response)
                 filter.disconnect()

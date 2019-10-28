@@ -14,6 +14,13 @@ export default class Injector {
 
     init() {
         this.injectObserver()
+        this.tellBackgroundThatThereIsTheTime()
+    }
+
+    tellBackgroundThatThereIsTheTime() {
+        browser.runtime.sendMessage({
+            type: 'MY_HONEY_BACKGROUND_LETS_GET_STARTED'
+        })
     }
 
     async switchFeature({ name, mode }) {
@@ -27,11 +34,20 @@ export default class Injector {
             return
         }
         if (featureConfig.files.inject) {
-            ['js', 'css'].forEach(ext => {
-                if (featureConfig.files.inject[ext]) {
-                    this[(mode ? 'push' : 'pull') + 'File'](ext, name)
+            let exts = ['css', 'js']
+            if (!mode) {
+                exts = exts.reverse()
+            }
+            for (let i = 0; i < exts.length; i++) {
+                if (featureConfig.files.inject[exts[i]]) {
+                    const func = this[(mode ? 'push' : 'pull') + 'File']
+                    if (i === 1 && exts[i] === 'css') {
+                        setTimeout(func.bind(this), 0, exts[i], name)
+                    } else {
+                        func.call(this, exts[i], name)
+                    }
                 }
-            }, this)
+            }
         }
         if (featureConfig.files.content) {
             const contentChunk = await import(/* webpackMode: "eager" */ `../features/${name}/content.js`)
@@ -61,7 +77,7 @@ export default class Injector {
     }
 
     pushFile(ext, featureName) {
-        const nodeId = `dragons-ui__${featureName}-${ext}`
+        const nodeId = `dragons-ui__${ext}__${featureName}`
         const existingNode = document.getElementById(nodeId)
         if (existingNode) {
             existingNode.remove()
@@ -88,9 +104,8 @@ export default class Injector {
     }
 
     pullFile(ext, featureName) {
-        const nodeId = `dragons-ui__${featureName}-${ext}`
+        const nodeId = `dragons-ui__${ext}__${featureName}`
         if (ext === 'js') {
-            // Reset feature side-effects to default values
             const scriptReseter = document.createElement('script')
             scriptReseter.id = nodeId + '-deleter'
             scriptReseter.text = `
