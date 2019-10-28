@@ -1,0 +1,114 @@
+$color__background: #f3ecd4
+$color__font: #430f02
+$color__border: #e3e3e3
+
+%node
+    border-radius: 5px
+    box-shadow: 0 0 3px rgba(0, 0, 0, .25)
+    background: $color__background
+
+.dragons-ui__chat-cleaner
+    display: flex
+    @extend %node
+
+    &__main-button
+        padding: 8px 10px
+        border-radius: 0 5px 5px 0
+        border-left: 1px solid #e3e3e3
+        font: 11px/11px Tahoma
+        color: $color__font
+        transition: background .15s linear
+        cursor: pointer
+
+        &:hover
+            background: lighten($color__background, 5%)
+
+    &__arrow
+        position: relative
+        width: 24px
+
+        & > span
+            position: absolute
+            top: 50%
+            left: 50%
+            margin:
+                top: -2px
+                left: -1px
+            transform: rotate(-45deg)
+            width: 5px
+            height: 5px
+            background: $color__font
+
+            &:after
+                content: ''
+                position: absolute
+                top: 1px
+                left: 1px
+                width: inherit
+                height: inherit
+                background: $color__background
+
+    &__arrow:hover &__flyout
+        visibility: visible
+        margin-right: 0
+        opacity: 1
+
+    &__flyout
+        visibility: hidden
+        position: absolute
+        right: 100%
+        bottom: 0
+        padding: 0 10px 0 0
+        opacity: 0
+        margin-right: 10px
+        transition: all .15s linear
+
+        &-content
+            margin: 0
+            padding: 0
+            list-style-type: none
+            @extend %node
+        
+        &-item
+            padding: 10px 15px
+            white-space: nowrap
+            font: 11px/11px 'Trebuchet MS'
+            color: $color__font
+            transition: background .15s linear
+            cursor: pointer
+
+            &:hover
+                background: lighten($color__background, 5%)
+
+            &:first-child
+                border-radius: 5px 5px 0 0
+            
+            &:last-child
+                border-radius: 0 0 5px 5px
+
+            &:before
+                content: ''
+                display: inline-block
+                width: 8px
+                height: 8px
+                margin: 0 8px 0 0
+                border-radius: 50%
+
+            &_system:before
+                background: BURLYWOOD
+
+            &_group:before
+                background: SLATEGRAY
+
+            &_common:before
+                background: LIGHTGRAY
+
+            &_alliance:before
+                background: #9370DB
+
+            &_clan:before
+                background: YELLOWGREEN
+
+            &_private:before
+                background: MAROON
+                
