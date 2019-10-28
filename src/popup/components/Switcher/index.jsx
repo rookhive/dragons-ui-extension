@@ -20,7 +20,7 @@ export default class Switcher extends Component {
             isLoading: true
         }))
         if (onSwitch) {
-            const result = await pMinDelay(onSwitch(newMode), 500)
+            const result = await pMinDelay(onSwitch(newMode), 300)
             if (result.error) {
                 throw new Error(result.error)
             }
