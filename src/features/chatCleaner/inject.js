@@ -13,9 +13,9 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
 
         const itemsLib = [
             { id: 'group',    title: 'Групповые'  },
-            { id: 'battle',   title: 'Боевые'     },
-            { id: 'common',   title: 'Общие'      },
-            { id: 'private',  title: 'Приватные'  },
+            { id: 'fight',    title: 'Боевые'     },
+            { id: 'location', title: 'Общие'      },
+            { id: 'brown',    title: 'Приватные'  },
             { id: 'clan',     title: 'Клановые'   },
             { id: 'alliance', title: 'Альянсовые' },
             { id: 'system',   title: 'Системные'  }
@@ -27,7 +27,7 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
 
         document
             .querySelector('.dragons-ui__chat-cleaner__main-button')
-            .addEventListener('mousedown', () => { console.log('Очищен чат') })
+            .addEventListener('mousedown', () => { this.cleanChatMessages('all') })
 
         itemsLib.forEach(item => {
             const itemNode = document.createElement('li')
@@ -50,11 +50,13 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
             case 'system':
                 $oldMessages.each(function () {
                     const $message = $(this)
+                    const messageType = $message.find("span.bold").text()
                     if (
                         $message.find('span.dred').length
                         && $message.find('span.bold').length
                         && $message.text().includes('Системное')
-                        || $message.find("span.bold").text() === 'Объявление'
+                        || messageType === 'Объявление'
+                        || messageType == 'Информация'
                         || $message.find('span').eq(2).text() === 'Глашатай'
                     ) $message.remove()
                 })
@@ -63,31 +65,28 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
             case 'all':
                 console.log('Удаляем все старые сообщения чата.')
                 $oldMessages.each(function () {
-                    this.remove() // this: message's DOM node
+                    this.remove()
                 })
                 break
 
             default:
                 $oldMessages.each(function () {
                     const $message = $(this)
-                    if ($message.find('span:nth-child(2)').attr('class') === `ch_${category}`)
+                    if ($message.find('span:nth-child(2)').attr('class') === (category === 'brown' ? category : `ch_${category}`))
                         $message.remove()
                 })
                 break
         }
-        this.setChatCleanerNodePosition()
+        // this.setChatCleanerNodePosition()
     }
 
-    setChatCleanerNodePosition() {
-        $('.dragons-ui__chat-cleaner').css(
-            'right',
-            (
-                $('#chat_cut').height() >= $('#messages').height()
-                    ? 5
-                    : 20
-            ) + 'px'
-        )
-    }
+    // setChatCleanerNodePosition() {
+    //     $('.dragons-ui__chat-cleaner').css({
+    //         right: $('#chat_cut').height() < $('#messages').height()
+    //             ? 20
+    //             : 5
+    //     })
+    // }
 
     // Проверяем последнее сообщение в #messages. Если оно получено ранее, чем
     // секунду назад, то завершаем цикл и удаляем все сообщения остальные. Если

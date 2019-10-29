@@ -49,7 +49,7 @@ DragonsUI.register('countryObjectsTimeToDeath', class extends DragonsUI.Feature 
             },
             setHandlers: function () {}
         })
-        C.PR.refresh()
+        C.PR.refresh && C.PR.refresh()
     }
 
     uninstall() {
@@ -77,6 +77,6 @@ DragonsUI.register('countryObjectsTimeToDeath', class extends DragonsUI.Feature 
             setHandlers: function () {}
         })
 
-        INTF.SCN.scene.rebuild()
+        INTF.SCN && INTF.SCN.scene && INTF.SCN.scene.rebuild && INTF.SCN.scene.rebuild()
     }
 })

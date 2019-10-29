@@ -1,3 +1,6 @@
+if (window.DragonsUI) {
+    DragonsUI.clear()
+}
 window.DragonsUI = new class DragonsUI { //window.DragonsUI ||
     constructor() {
         this.features = new Map()
@@ -48,12 +51,7 @@ window.DragonsUI = new class DragonsUI { //window.DragonsUI ||
             const seconds = s % 60
             return [hours, minutes, seconds]
                 .filter((item, i) => item || i > 0)
-                .map(item => {
-                    if (item < 10) {
-                        item = '0' + item
-                    }
-                    return item
-                })
+                .map(item => item < 10 ? '0' + item : item)
                 .join(':')
         }
     }
@@ -73,6 +71,12 @@ window.DragonsUI = new class DragonsUI { //window.DragonsUI ||
         }
         this.features.get(featureName).uninstall()
         this.features.delete(featureName)
+    }
+
+    clear() {
+        this.features.forEach(feature => {
+            feature.uninstall()
+        })
     }
 
     log(type, message) {

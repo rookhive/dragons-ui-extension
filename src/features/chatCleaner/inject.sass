@@ -22,7 +22,7 @@ $color__blue: #60a2ce
 .dragons-ui__chat-cleaner
     position: absolute
     top: 5px
-    right: 5px
+    right: 20px
     visibility: hidden
     display: flex
     opacity: 0
@@ -98,9 +98,9 @@ $color__blue: #60a2ce
             @extend %node
         
         &-item
-            padding: 10px 15px
+            padding: 10px 15px 10px 10px
             white-space: nowrap
-            font: 11px/11px 'Trebuchet MS'
+            font: 12px/12px 'Trebuchet MS'
             color: $color__font
             transition: all .15s linear
             cursor: pointer
@@ -117,29 +117,50 @@ $color__blue: #60a2ce
             &:before
                 content: ''
                 display: inline-block
-                width: 8px
-                height: 8px
+                width: 7px
+                height: 7px
                 margin: 0 8px 0 0
                 border-radius: 50%
 
-            &_system:before
-                background: #801010 //!
+            &_system
+                &:hover
+                    color: #801010
+                &:before
+                    background: #801010
 
-            &_group:before
-                background: SLATEGRAY
+            &_group
+                &:hover
+                    color: SLATEGRAY
+                &:before
+                    background: SLATEGRAY
 
-            &_common:before
-                background: #006a76 //!
+            &_location
+                &:hover
+                    color: #006a76
+                &:before
+                    background: #006a76
 
-            &_battle:before
-                background: black
+            &_fight
+                &:hover
+                    color: #8a5656
+                &:before
+                    background: #8a5656
 
-            &_alliance:before
-                background: #181b75 //!
+            &_alliance
+                &:hover
+                    color: #181b75
+                &:before
+                    background: #181b75
 
-            &_clan:before
-                background: #54810f //!
+            &_clan
+                &:hover
+                    color: #54810f
+                &:before
+                    background: #54810f
 
-            &_private:before
-                background: #c50000 //!
+            &_brown
+                &:hover
+                    color: #c50000
+                &:before
+                    background: #c50000
                 
