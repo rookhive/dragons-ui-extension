@@ -32,7 +32,7 @@ DragonsUI.register('countryObjectsTimeToDeath', class extends DragonsUI.Feature 
                     ? this.obj.expire - Date.now() / 1000
                     : 0
                 const timeToLiveHTML = timeToLive > 0
-                    ? `<div class="${timerClassName}" data-time-to-live="${this.obj.expire}"><span></span></div>` 
+                    ? `<div class="${timerClassName}" data-time-to-live="${this.obj.expire}"><span>${_this.parseSeconds(parseInt(timeToLive))}</span></div>` 
                     : ''
                 var b = this.obj
                     , c = (b.info.login ? MOD.name(b.info, false, false, true) : MOD.tripObjName(b))
