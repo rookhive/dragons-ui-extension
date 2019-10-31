@@ -13,7 +13,7 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
 
         const itemsLib = [
             { id: 'silenced', title: 'Замолченные' },
-            { id: 'group',    title: 'Групповые'   },
+            { id: 'party',    title: 'Групповые'   },
             { id: 'fight',    title: 'Боевые'      },
             { id: 'location', title: 'Общие'       },
             { id: 'brown',    title: 'Приватные'   },
