@@ -1,6 +1,6 @@
 export default {
     name: 'chatCleaner',
-    title: 'Очистка чата по категории сообщений + безопасное удаление чата.',
+    title: 'Безопасная очистка чата по категории',
     files: {
         inject: {
             js: true,

@@ -12,22 +12,27 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
             </div>`
 
         const itemsLib = [
-            { id: 'group',    title: 'Групповые'  },
-            { id: 'fight',    title: 'Боевые'     },
-            { id: 'location', title: 'Общие'      },
-            { id: 'brown',    title: 'Приватные'  },
-            { id: 'clan',     title: 'Клановые'   },
-            { id: 'alliance', title: 'Альянсовые' },
-            { id: 'system',   title: 'Системные'  }
+            { id: 'silenced', title: 'Замолченные' },
+            { id: 'group',    title: 'Групповые'   },
+            { id: 'fight',    title: 'Боевые'      },
+            { id: 'location', title: 'Общие'       },
+            { id: 'brown',    title: 'Приватные'   },
+            { id: 'clan',     title: 'Клановые'    },
+            { id: 'alliance', title: 'Альянсовые'  },
+            { id: 'system',   title: 'Системные'   }
         ]
 
         document
             .getElementById('chat_cut')
             .insertAdjacentHTML('afterend', chatCleanerMarkup)
 
+        this.chatListeners('add')
+
         document
             .querySelector('.dragons-ui__chat-cleaner__main-button')
-            .addEventListener('mousedown', () => { this.cleanChatMessages('all') })
+            .addEventListener('mousedown', () => {
+                this.cleanChatMessages('all')
+            })
 
         itemsLib.forEach(item => {
             const itemNode = document.createElement('li')
@@ -41,11 +46,38 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
     }
 
     uninstall() {
+        this.chatListeners('remove')
         $('.dragons-ui__chat-cleaner').remove()
     }
 
+    chatListeners(action) {
+        const chatNode = document.getElementById('chat_cut').parentNode
+        switch (action) {
+            case 'add':
+                this.chatMouseEnterHandler = this.chatMouseEnter.bind(this)
+                this.chatMouseLeaveHandler = this.chatMouseLeave.bind(this)
+                this.chatMessagesObserver = new MutationObserver(() => {
+                    this.setChatCleanerNodePosition('.dragons-ui__chat-cleaner')
+                })
+                this.chatMessagesObserver.observe(
+                    document.getElementById('messages'),
+                    { childList: true }
+                )
+                break
+
+            case 'remove':
+                this.chatMessagesObserver.disconnect()
+                delete this.chatMessagesObserver
+                break
+        }
+        chatNode[action + 'EventListener']('mouseenter', this.chatMouseEnterHandler)
+        chatNode[action + 'EventListener']('mouseleave', this.chatMouseLeaveHandler)
+    }
+
     cleanChatMessages(category) {
-        const $oldMessages = this.getOldMessages()
+        const $oldMessages = category !== 'silenced'
+            ? $(this.getOldMessages())
+            : $('.ch_message.ch_silenced')
         switch(category) {
             case 'system':
                 $oldMessages.each(function () {
@@ -63,7 +95,7 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
                 break
 
             case 'all':
-                console.log('Удаляем все старые сообщения чата.')
+            case 'silenced':
                 $oldMessages.each(function () {
                     this.remove()
                 })
@@ -77,23 +109,49 @@ DragonsUI.register('chatCleaner', class extends DragonsUI.Feature {
                 })
                 break
         }
-        // this.setChatCleanerNodePosition()
     }
 
-    // setChatCleanerNodePosition() {
-    //     $('.dragons-ui__chat-cleaner').css({
-    //         right: $('#chat_cut').height() < $('#messages').height()
-    //             ? 20
-    //             : 5
-    //     })
-    // }
-
-    // Проверяем последнее сообщение в #messages. Если оно получено ранее, чем
-    // секунду назад, то завершаем цикл и удаляем все сообщения остальные. Если
-    // нет, то проверяем следующее. И так далее, пока не наткнёмся на сообщение,
-    // полученное ранее, чем секунду назад. Тогда удаляем его и все более ранние
-    // сообщения.
     getOldMessages() {
-        return $(".ch_message")
+        const messages = Array.prototype.slice.call(document.querySelectorAll('.ch_message'))
+        const serverTimeString = document.getElementById('clock').textContent
+        let lastIndex = messages.length
+        for (let i = messages.length - 1; i > -1; i--) {
+            const messageTimeString = messages[i].querySelector('span').textContent
+            const timeDifference = this.getTimeStringsDifference(serverTimeString, messageTimeString)
+            if (timeDifference < 2) {
+                lastIndex = i
+            } else {
+                break
+            }
+        }
+        return messages.slice(0, lastIndex)
+    }
+
+    getTimeStringsDifference(serverTimeString, messageTimeString) {
+        let [serverTime, messageTime] = [...arguments].map(timeString => {
+            const timeArray = timeString.split(':').map(item => +item)
+            return timeArray[0] * 3600 + timeArray[1] * 60 + timeArray[2]
+        })
+        return serverTime - messageTime
+    }
+
+    chatMouseEnter(event) {
+        const chatCleanerNode = event.target.querySelector('.dragons-ui__chat-cleaner')
+        this.setChatCleanerNodePosition(chatCleanerNode)
+        chatCleanerNode.classList.add('dragons-ui__chat-cleaner_visible')
+    }
+
+    chatMouseLeave(event) {
+        event.target
+            .querySelector('.dragons-ui__chat-cleaner')
+            .classList.remove('dragons-ui__chat-cleaner_visible')
+    }
+
+    setChatCleanerNodePosition(node) {
+        $(node).css({
+            right: $('#chat_cut').height() < $('#mess_bg').height()
+                ? this.getScrollbarWidth() + 5 + 'px'
+                : ''
+        })
     }
 })

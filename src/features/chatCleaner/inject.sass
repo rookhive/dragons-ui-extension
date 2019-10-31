@@ -12,22 +12,22 @@ $color__blue: #60a2ce
     background: lighten($color__background, 5%)
     color: $color__blue
 
-#chat tr:first-child:hover .dragons-ui__chat-cleaner
-    visibility: visible
-    opacity: 1
-
 #b_chat_clear
     display: none
 
 .dragons-ui__chat-cleaner
     position: absolute
     top: 5px
-    right: 20px
+    right: 5px
     visibility: hidden
     display: flex
     opacity: 0
-    transition: all .15s linear
+    transition: visibility .15s linear, opacity .15s linear
     @extend %node
+
+    &.dragons-ui__chat-cleaner_visible
+        visibility: visible
+        opacity: 1
 
     &__main-button
         padding: 8px 10px
@@ -98,7 +98,7 @@ $color__blue: #60a2ce
             @extend %node
         
         &-item
-            padding: 10px 15px 10px 10px
+            padding: 10px 20px 10px 10px
             white-space: nowrap
             font: 12px/12px 'Trebuchet MS'
             color: $color__font
@@ -119,8 +119,14 @@ $color__blue: #60a2ce
                 display: inline-block
                 width: 7px
                 height: 7px
-                margin: 0 8px 0 0
+                margin: 0 10px 0 0
                 border-radius: 50%
+
+            &_silenced
+                &:hover
+                    color: gray
+                &:before
+                    background: gray
 
             &_system
                 &:hover
@@ -163,4 +169,3 @@ $color__blue: #60a2ce
                     color: #c50000
                 &:before
                     background: #c50000
-                

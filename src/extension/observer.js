@@ -1,7 +1,7 @@
 if (window.DragonsUI) {
     DragonsUI.clear()
 }
-window.DragonsUI = new class DragonsUI { //window.DragonsUI ||
+window.DragonsUI = new class DragonsUI {
     constructor() {
         this.features = new Map()
         this.redefinedFunctions = new Map()
@@ -54,6 +54,24 @@ window.DragonsUI = new class DragonsUI { //window.DragonsUI ||
                 .map(item => item < 10 ? '0' + item : item)
                 .join(':')
         }
+
+        getScrollbarWidth() {
+            if (this.scrollbarWidth) {
+                return this.scrollbarWidth
+            }
+            const body = document.body
+            const div = document.createElement('div')
+            div.style.cssText = `
+                overflow-y: scroll;
+                width: 50px;
+                height: 50px;
+                visibility: hidden;
+            `
+            body.appendChild(div)
+            this.scrollbarWidth = div.offsetWidth - div.clientWidth
+            body.removeChild(div)
+            return this.scrollbarWidth
+        }
     }
 
     register(featureName, featureClass) {
@@ -74,8 +92,8 @@ window.DragonsUI = new class DragonsUI { //window.DragonsUI ||
     }
 
     clear() {
-        this.features.forEach(feature => {
-            feature.uninstall()
+        this.features.forEach((feature, name) => {
+            this.unregister(name)
         })
     }
 
