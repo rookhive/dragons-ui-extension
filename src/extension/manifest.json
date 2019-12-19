@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Dragons UI",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Ряд утилит, повышающих комфортность игры в MMORPG Mist.",
     "permissions": [
         "*://world.mist-game.ru/*",
